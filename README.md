@@ -1,1 +1,1 @@
-# com.sxi.hardening.compliance
+# Hardening Compliance Tool
