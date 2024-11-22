@@ -90,9 +90,6 @@ def generate_csv(host_info, data, output_file):
         print(f"Error writing CSV {output_file}: {e}")
 
 def generate_html(host_info, data, output_file):
-    """
-    Generates an HTML file from the control data, including host information, summary, and recommended configurations.
-    """
     try:
         summary = calculate_summary(data)
 
