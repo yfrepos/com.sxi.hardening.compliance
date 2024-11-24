@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<controls>
+  <control>
+    <id>MBSS-OS-RHEL7-001</id>
+    <domain>System Security</domain>
+    <description>Ensure cramfs kernel module is not available</description>
+    <module>
+      <name>cramfs</name>
+      <status>Not Loaded</status>
+    </module>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-002</id>
+    <domain>System Security</domain>
+    <description>Ensure freevxfs kernel module is not available</description>
+    <module>
+      <name>freevxfs</name>
+      <status>Not Loaded</status>
+    </module>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-003</id>
+    <domain>System Security</domain>
+    <description>Ensure /tmp is a separate partition</description>
+    <file>/etc/fstab</file>
+    <rule>SeparatePartition /tmp</rule>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-004</id>
+    <domain>System Security</domain>
+    <description>Ensure nodev option set on /tmp partition</description>
+    <file>/etc/fstab</file>
+    <rule>NodevOption /tmp</rule>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-005</id>
+    <domain>System Security</domain>
+    <description>Ensure noexec option set on /tmp partition</description>
+    <file>/etc/fstab</file>
+    <rule>NoexecOption /tmp</rule>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-006</id>
+    <domain>System Security</domain>
+    <description>Ensure nosuid option set on /tmp partition</description>
+    <file>/etc/fstab</file>
+    <rule>NosuidOption /tmp</rule>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-007</id>
+    <domain>System Security</domain>
+    <description>Ensure separate partition exists for /var</description>
+    <file>/etc/fstab</file>
+    <rule>SeparatePartition /var</rule>
+    <profile>Secondary</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-008</id>
+    <domain>System Security</domain>
+    <description>Ensure separate partition exists for /var/tmp</description>
+    <file>/etc/fstab</file>
+    <rule>SeparatePartition /var/tmp</rule>
+    <profile>Secondary</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-009</id>
+    <domain>System Security</domain>
+    <description>Ensure separate partition exists for /var/log</description>
+    <file>/etc/fstab</file>
+    <rule>SeparatePartition /var/log</rule>
+    <profile>Secondary</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-010</id>
+    <domain>System Security</domain>
+    <description>Ensure separate partition exists for /var/log/audit</description>
+    <file>/etc/fstab</file>
+    <rule>SeparatePartition /var/log/audit</rule>
+    <profile>Secondary</profile>
+  </control>
+
+  <control>
+    <id>MBSS-OS-RHEL7-019</id>
+    <domain>System Security</domain>
+    <description>Ensure access to /etc/motd is configured</description>
+    <file>/etc/motd</file>
+    <expected_permission>644</expected_permission>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-020</id>
+    <domain>System Security</domain>
+    <description>Ensure message of the day is configured properly</description>
+    <file>/etc/motd</file>
+    <rule>NoSpecialReferences</rule>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-021</id>
+    <domain>System Security</domain>
+    <description>Ensure local login warning banner is configured properly</description>
+    <file>/etc/issue</file>
+    <rule>NoSpecialReferences</rule>
+    <profile>Mandatory</profile>
+  </control>
+
+  <control>
+    <id>MBSS-OS-RHEL7-051</id>
+    <domain>Access and Authorization</domain>
+    <description>Ensure permissions on /etc/crontab are configured</description>
+    <file>/etc/crontab</file>
+    <expected_permission>600</expected_permission>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-052</id>
+    <domain>Access and Authorization</domain>
+    <description>Ensure permissions on /etc/cron.hourly are configured</description>
+    <file>/etc/cron.hourly</file>
+    <expected_permission>700</expected_permission>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-053</id>
+    <domain>Access and Authorization</domain>
+    <description>Ensure permissions on /etc/cron.daily are configured</description>
+    <file>/etc/cron.daily</file>
+    <expected_permission>700</expected_permission>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-054</id>
+    <domain>Access and Authorization</domain>
+    <description>Ensure permissions on /etc/cron.weekly are configured</description>
+    <file>/etc/cron.weekly</file>
+    <expected_permission>700</expected_permission>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-055</id>
+    <domain>Access and Authorization</domain>
+    <description>Ensure permissions on /etc/cron.monthly are configured</description>
+    <file>/etc/cron.monthly</file>
+    <expected_permission>700</expected_permission>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-056</id>
+    <domain>Access and Authorization</domain>
+    <description>Ensure permissions on /etc/cron.d are configured</description>
+    <file>/etc/cron.d</file>
+    <expected_permission>700</expected_permission>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-057</id>
+    <domain>Access and Authorization</domain>
+    <description>Ensure crontab is restricted to authorized users (cron.allow)</description>
+    <file>/etc/cron.allow</file>
+    <expected_owner>root:root</expected_owner>
+    <expected_permission>640</expected_permission>
+    <rule>CronAllowCheck</rule>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-057</id>
+    <domain>Access and Authorization</domain>
+    <description>Ensure crontab is restricted to authorized users (cron.deny)</description>
+    <file>/etc/cron.deny</file>
+    <expected_owner>root:root</expected_owner>
+    <expected_permission>640</expected_permission>
+    <rule>CronDenyCheck</rule>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-058</id>
+    <domain>Access and Authorization</domain>
+    <description>Ensure at is restricted to authorized users (at.allow)</description>
+    <file>/etc/at.allow</file>
+    <expected_permission>640</expected_permission>
+    <expected_owner>root:root</expected_owner>
+    <rule>AtAllowCheck</rule>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-058</id>
+    <domain>Access and Authorization</domain>
+    <description>Ensure at is restricted to authorized users (at.deny)</description>
+    <file>/etc/at.deny</file>
+    <expected_permission>640</expected_permission>
+    <expected_owner>root:root</expected_owner>
+    <rule>AtDenyCheck</rule>
+    <profile>Mandatory</profile>
+  </control>
+
+  <control>
+    <id>MBSS-OS-RHEL7-059</id>
+    <domain>Access and Authorization</domain>
+    <description>Ensure permissions on /etc/ssh/sshd_config are configured</description>
+    <file>/etc/passwd</file>
+    <expected_permission>644</expected_permission>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-061</id>
+    <domain>Access and Authorization</domain>
+    <description>Ensure sshd MaxSessions is configured</description>
+    <file>/etc/ssh/sshd_config</file>
+    <rule>MaxSessions 10</rule>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-097</id>
+    <domain>Access and Authorization</domain>
+    <description>Ensure sshd access is configured</description>
+    <file>/etc/ssh/sshd_config</file>
+    <rule>AccessConfigured yes</rule>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-098</id>
+    <domain>Access and Authorization</domain>
+    <description>Ensure sshd IgnoreRhosts is enabled</description>
+    <file>/etc/ssh/sshd_config</file>
+    <rule>IgnoreRhosts yes</rule>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-099</id>
+    <domain>Authentication</domain>
+    <description>Ensure sshd PermitEmptyPasswords is disabled</description>
+    <file>/etc/ssh/sshd_config</file>
+    <rule>PermitEmptyPasswords no</rule>
+    <profile>Mandatory</profile>
+  </control>
+  <control>
+    <id>MBSS-OS-RHEL7-100</id>
+    <domain>Authentication</domain>
+    <description>Ensure sshd HostbasedAuthentication is disabled</description>
+    <file>/etc/ssh/sshd_config</file>
+    <rule>HostbasedAuthentication no</rule>
+    <profile>Mandatory</profile>
+  </control>
+</controls>

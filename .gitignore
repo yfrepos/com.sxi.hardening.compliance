@@ -1,4 +1,5 @@
 # Custom gitignore for projects
+**/archives/*
 **/input/*
 **/output/*
 **/v*/

@@ -11,7 +11,24 @@ FILES_TO_DUMP=(
     "/etc/ssh/sshd_config"
     "/etc/fstab"
     "/etc/motd"
+    "/etc/issue"
     "/etc/crontab"
+    "/etc/cron.hourly"
+    "/etc/cron.daily"
+    "/etc/cron.weekly"
+    "/etc/cron.monthly"
+    "/etc/cron.d"
+    "/etc/cron.allow"
+    "/etc/cron.deny"
+    "/etc/at.allow"
+    "/etc/at.deny"
+)
+
+
+# List of kernel modules to check
+MODULES_TO_DUMP=(
+    "cramfs"
+    "freevxfs"
 )
 
 gather_system_info() {
@@ -39,7 +56,6 @@ gather_system_info() {
     echo "  </HostInfo>" >> "$OUTPUT_FILE"
 }
 
-# Dump file information into the XML
 dump_file_info() {
     local file="$1"
     local error_flag=""
@@ -47,30 +63,54 @@ dump_file_info() {
     echo "    <File>" >> "$OUTPUT_FILE"
     echo "      <Path>${file}</Path>" >> "$OUTPUT_FILE"
 
-    if [ -f "$file" ]; then
+    if [ -f "$file" ] || [ -d "$file" ]; then
         local permissions owner md5_hash sha1_hash base64_content
         permissions=$(stat -c "%a" "$file" 2>/dev/null) || error_flag="Permission denied"
         owner=$(stat -c "%U:%G" "$file" 2>/dev/null) || error_flag="Permission denied"
-        md5_hash=$(md5sum "$file" 2>/dev/null | awk '{print $1}') || error_flag="Permission denied"
-        sha1_hash=$(sha1sum "$file" 2>/dev/null | awk '{print $1}') || error_flag="Permission denied"
-        base64_content=$(base64 "$file" 2>/dev/null) || error_flag="Permission denied"
+
+        # Identify if the path is a directory
+        if [ -d "$file" ]; then
+            echo "      <Type>directory</Type>" >> "$OUTPUT_FILE"
+        else
+            echo "      <Type>file</Type>" >> "$OUTPUT_FILE"
+            md5_hash=$(md5sum "$file" 2>/dev/null | awk '{print $1}') || error_flag="Permission denied"
+            sha1_hash=$(sha1sum "$file" 2>/dev/null | awk '{print $1}') || error_flag="Permission denied"
+            base64_content=$(base64 "$file" 2>/dev/null) || error_flag="Permission denied"
+        fi
 
         if [ -n "$error_flag" ]; then
             echo "      <Error>${error_flag}</Error>" >> "$OUTPUT_FILE"
         else
             echo "      <Permissions>${permissions}</Permissions>" >> "$OUTPUT_FILE"
             echo "      <Owner>${owner}</Owner>" >> "$OUTPUT_FILE"
-            echo "      <MD5>${md5_hash}</MD5>" >> "$OUTPUT_FILE"
-            echo "      <SHA1>${sha1_hash}</SHA1>" >> "$OUTPUT_FILE"
-            echo "      <Content encoding=\"base64\">" >> "$OUTPUT_FILE"
-            echo "${base64_content}" >> "$OUTPUT_FILE"
-            echo "      </Content>" >> "$OUTPUT_FILE"
+            if [ -f "$file" ]; then
+                echo "      <MD5>${md5_hash}</MD5>" >> "$OUTPUT_FILE"
+                echo "      <SHA1>${sha1_hash}</SHA1>" >> "$OUTPUT_FILE"
+                echo "      <Content encoding=\"base64\">" >> "$OUTPUT_FILE"
+                echo "${base64_content}" >> "$OUTPUT_FILE"
+                echo "      </Content>" >> "$OUTPUT_FILE"
+            fi
         fi
     else
         echo "      <Error>File not found</Error>" >> "$OUTPUT_FILE"
     fi
 
     echo "    </File>" >> "$OUTPUT_FILE"
+}
+
+dump_kernel_modules() {
+    echo "  <Modules>" >> "$OUTPUT_FILE"
+    for module in "${MODULES_TO_DUMP[@]}"; do
+        echo "    <Module>" >> "$OUTPUT_FILE"
+        echo "      <Name>${module}</Name>" >> "$OUTPUT_FILE"
+        if lsmod | grep -q "^${module} "; then
+            echo "      <Status>Loaded</Status>" >> "$OUTPUT_FILE"
+        else
+            echo "      <Status>Not Loaded</Status>" >> "$OUTPUT_FILE"
+        fi
+        echo "    </Module>" >> "$OUTPUT_FILE"
+    done
+    echo "  </Modules>" >> "$OUTPUT_FILE"
 }
 
 initialize_xml() {
@@ -92,9 +132,10 @@ main() {
     done
     echo "  </Files>" >> "$OUTPUT_FILE"
 
+    dump_kernel_modules
     finalize_xml
 
-    echo "File information dumped into $OUTPUT_FILE"
+    echo "File and module information dumped into $OUTPUT_FILE"
 }
 
 main
